@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package account.v1;
+
+// Sketch — names are placeholders. Replace with whatever your real
+// domain calls these things before wiring this up to anything real.
+
+service AccountService {
+  rpc Get        (GetRequest)    returns (Account);
+  rpc Upsert     (UpsertRequest) returns (UpsertReply);
+  rpc StreamFeed (FeedRequest)   returns (stream FeedEvent);
+}
+
+message GetRequest {
+  string account_ref = 1;
+}
+
+message UpsertRequest {
+  string account_ref = 1;
+  string display     = 2;
+  double value_a     = 3;
+  double value_b     = 4;
+}
+
+message UpsertReply {
+  bool   ok          = 1;
+  string account_ref = 2;
+}
+
+message Account {
+  string account_ref = 1;
+  string display     = 2;
+  double value_a     = 3;
+  double value_b     = 4;
+  int64  updated_at  = 5;
+}
+
+message FeedRequest {
+  string account_ref = 1;
+  int64  since_ms    = 2;
+}
+
+message FeedEvent {
+  string kind = 1;
+  bytes  blob = 2;
+  int64  at   = 3;
+}
